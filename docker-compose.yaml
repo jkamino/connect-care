@@ -3,6 +3,7 @@ services:
   app:
     image: node:16.14.0
     working_dir: /usr/src/app
+    env_file: ./app.env
     tty: true
     ports:
       - "3000:3000"

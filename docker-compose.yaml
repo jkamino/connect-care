@@ -1,0 +1,45 @@
+version: "3.7"
+services:
+  app:
+    image: node:16.14.0
+    working_dir: /usr/src/app
+    tty: true
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./express:/usr/src/app
+    command: >
+      bash -c "npm install &&
+      npm install nodemon -g &&
+      nodemon src/server.js"
+  db:
+    # 起動するイメージを指定
+    image: mysql:8.0.23
+
+    # 環境変数を設定
+    environment:
+      - MYSQL_ROOT_HOST=${DB_ROOT_HOST}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
+      - MYSQL_ROOT_PASSWORD=${DB_PASS}
+      - TZ=${TZ}
+
+    # ホスト側のポート:コンテナのポート
+    ports:
+      - "3306:3306"
+
+    # ボリュームバインド
+    volumes:
+      - ./db/conf:/etc/mysql/conf.d/:ro
+      - mysqldata:/var/lib/mysql
+      - ./db/logs:/var/log/mysql
+
+    #使用するネットワーク
+    networks:
+      - backend
+
+networks:
+  backend:
+volumes:
+  mysqldata:

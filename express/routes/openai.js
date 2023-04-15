@@ -25,7 +25,8 @@ router.post("/title", async function (req, res, next) {
 });
 
 router.post("/description", async function (req, res, next) {
-  const prompt = "Please answer in Japanese.";
+  const prompt =
+    "Please read the following new sentence, and Think a letter calling for donations to solve this issue.the description must be English. and it must be 200 words or less.---";
   try {
     const message = req.body.message;
     const response = await openai.createChatCompletion({

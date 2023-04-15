@@ -26,7 +26,7 @@ contract Fundraising {
         // `require` the block.timestamp which is a date, to be a smaller date than the finishTime of our contract.
         // if the block.timestamp is bigger, which means the current date is after the finishTime,
         // we will show an error that says "This campaign is over".
-        // require(block.timestamp < finishTime, "This campaign is over");
+        require(block.timestamp < finishTime, "This campaign is over");
         
         // Using the global variable `msg.sender` to know who is sending money and `msg.value` to know how much they are sending
         // and we save this info in our mapping, with the sender as they key and the money amount as the value.
@@ -48,7 +48,7 @@ contract Fundraising {
         
         // If all these conditions are true, if the person calling withdrawDonations is the owner of the contract,
         // if the raised amount is more than the target amount, and if the campaign has finished we will release the funds to the owner.
-        // require(block.timestamp > finishTime, "The campaign is not over yet.");
+        require(block.timestamp > finishTime, "The campaign is not over yet.");
         payable(receiver).transfer(raisedAmount);
     }
     

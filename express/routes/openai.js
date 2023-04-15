@@ -8,7 +8,7 @@ const openai = new OpenAIApi(configuration);
 
 router.post("/title", async function (req, res, next) {
   const prompt =
-    "Please read the following new sentence, and Think a title for a fundraiser to solve this issue.the title must be English.---";
+    "Please read the following new sentence, and Think a title for a fundraiser to solve this issue.the title must be English.Return title only.---";
   try {
     const message = req.body.message;
     const response = await openai.createChatCompletion({

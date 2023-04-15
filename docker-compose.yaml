@@ -32,7 +32,7 @@ services:
 
     # ボリュームバインド
     volumes:
-      - ./db/conf:/etc/mysql/conf.d/:ro
+      # - ./db/conf:/etc/mysql/conf.d/:ro
       - mysqldata:/var/lib/mysql
       - ./db/logs:/var/log/mysql
 

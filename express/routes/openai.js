@@ -6,12 +6,13 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-router.post("/", async function (req, res, next) {
+router.post("/title", async function (req, res, next) {
+  const prompt = "Please answer in English.";
   try {
     const message = req.body.message;
     const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: message }],
+      messages: [{ role: "user", content: prompt + message }],
     });
 
     const result = response.data.choices[0].message.content;
@@ -22,4 +23,20 @@ router.post("/", async function (req, res, next) {
   }
 });
 
+router.post("/description", async function (req, res, next) {
+  const prompt = "Please answer in Japanese.";
+  try {
+    const message = req.body.message;
+    const response = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: prompt + message }],
+    });
+
+    const result = response.data.choices[0].message.content;
+    res.json({ message: result });
+  } catch (e) {
+    console.log(e);
+    res.json({ message: "Error Occured." });
+  }
+});
 module.exports = router;

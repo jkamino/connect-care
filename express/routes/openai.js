@@ -6,21 +6,39 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-router.get("/", async function (req, res, next) {
-  // console.log(configuration.apiKey);
-  const message = req.body.message;
-  const response = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    messages: [{ role: "user", content: message }],
-  });
+router.post("/title", async function (req, res, next) {
+  const prompt =
+    "Please read the following new sentence, and Think a title for a fundraiser to solve this issue.the title must be English.Return title only.---";
+  try {
+    const message = req.body.message;
+    const response = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: prompt + message }],
+    });
 
-  // const completion = await openai.createCompletion({
-  //   model: "text-davinci-003",
-  //   prompt: "What is chat gpt? Please answer in Japanese.",
-  // });
-  const result = response.data.choices[0].message.content;
-  // console.log(completion.data.choices[0].text);
-  res.json({ message: result });
+    const result = response.data.choices[0].message.content;
+    res.json({ message: result });
+  } catch (e) {
+    console.log(e);
+    res.json({ message: "Error Occured." });
+  }
 });
 
+router.post("/description", async function (req, res, next) {
+  const prompt =
+    "Please read the following new sentence, and Think a dxescription calling for donations to solve this issue.the description must be English. and it must be 200 words or less.---";
+  try {
+    const message = req.body.message;
+    const response = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: prompt + message }],
+    });
+
+    const result = response.data.choices[0].message.content;
+    res.json({ message: result });
+  } catch (e) {
+    console.log(e);
+    res.json({ message: "Error Occured." });
+  }
+});
 module.exports = router;

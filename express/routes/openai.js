@@ -6,21 +6,20 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-router.get("/", async function (req, res, next) {
-  // console.log(configuration.apiKey);
-  const message = req.body.message;
-  const response = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    messages: [{ role: "user", content: message }],
-  });
+router.post("/", async function (req, res, next) {
+  try {
+    const message = req.body.message;
+    const response = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: message }],
+    });
 
-  // const completion = await openai.createCompletion({
-  //   model: "text-davinci-003",
-  //   prompt: "What is chat gpt? Please answer in Japanese.",
-  // });
-  const result = response.data.choices[0].message.content;
-  // console.log(completion.data.choices[0].text);
-  res.json({ message: result });
+    const result = response.data.choices[0].message.content;
+    res.json({ message: result });
+  } catch (e) {
+    console.log(e);
+    res.json({ message: "Error Occured." });
+  }
 });
 
 module.exports = router;
